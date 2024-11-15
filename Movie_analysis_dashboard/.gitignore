@@ -1,0 +1,52 @@
+# Ignore the Data_sources directory
+Data_sources/
+
+# Python bytecode files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Environment or virtual environment directories
+env/
+venv/
+.venv/
+
+# Configuration files and metadata
+*.env
+*.DS_Store
+*.ini
+*.log
+*.sqlite3
+
+# System files (macOS and Windows)
+.DS_Store
+Thumbs.db
+
+# Ignore compiled libraries
+*.so
+*.dylib
+*.dll
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+
+# IDE directories
+.idea/
+.vscode/
+*.swp
+
+# Ignore any cache or temporary files
+*.temp
+*.tmp
+*.bak
+*.old
+*.orig
+.cache/
+*.cache
+*.pytest_cache/
