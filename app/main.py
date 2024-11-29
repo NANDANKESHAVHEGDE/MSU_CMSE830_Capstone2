@@ -2,20 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import subprocess
-import sys
-
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-try:
-    import seaborn
-except ImportError:
-    install("seaborn==0.13.2")
-     
 import seaborn as sns
 import matplotlib.pyplot as plt
-import os
+from sklearn.metrics import mean_squared_error, r2_score
 
 # Set page configuration
 st.set_page_config(
@@ -31,13 +20,11 @@ def load_data():
     inference_results_path = "../Predictions/inference_results.csv"
     model_path = "../Model_outputs/champion_model.pkl"
 
-    # Load the data
+    # Load the data and model
     data = pd.read_pickle(data_path)
     inference_results = pd.read_csv(inference_results_path)
-
-    # Load the model using pickle
-    with open(model_path, "rb") as f:
-        model = pickle.load(f)
+    with open(model_path, "rb") as model_file:
+        model = pickle.load(model_file)
 
     # Feature Engineering: Add profit margin
     if "profit_margin" not in data.columns:
@@ -68,29 +55,18 @@ def clean_numeric_column(data, column_name):
 
 # Page 1: Overview
 if page_selection == "Overview":
-    st.title("Overview: Movie Analysis Dashboard")
+    st.title("Movie Analysis Dashboard")
     st.markdown("""
-        Welcome to the **Movie Analysis Dashboard**! This interactive app provides insights into 
-        movie data and revenue predictions. Below is an overview of the pipeline:
-        
-        **Data Source:**
-        - The dataset is derived from [Kaggle's TMDb Dataset](https://www.kaggle.com/datasets/tmdb).
-        - It contains information about movie budgets, revenues, ratings, and more.
-        
-        **Pipeline:**
-        1. **Data Cleaning & Feature Engineering:**
-           - Missing values handled for critical columns.
-           - Added derived features like `profit_margin` and `ROI`.
-        2. **Exploratory Data Analysis (EDA):**
-           - Visualizations to explore relationships in the data.
-        3. **Model Training & Evaluation:**
-           - Trained a **Random Forest Regressor** for revenue prediction.
-           - Evaluated model using metrics like MSE, RMSE, MAE, and R².
-        4. **Model Inference:**
-           - Predict revenue based on user inputs or batch data.
-        
-        **How to Navigate:**
-        - Use the sidebar to switch between tabs for EDA, prediction, and inference results.
+    ## Overview
+    This dashboard provides insights into movie datasets, predictions of revenue based on input features, and performance evaluations of the predictive model. Key functionalities include:
+    
+    - **Exploratory Data Analysis (EDA):** Uncover patterns and trends in movie data.
+    - **Model Prediction:** Predict movie revenue using a trained regression model.
+    - **Inference Results:** Evaluate model performance and visualize predictions versus actual values.
+    
+    ### Data Sources
+    - **Cleaned Dataset:** Movies with revenue, budget, genre, and ratings data.
+    - **Machine Learning Model:** Trained on the cleaned data for revenue prediction.
     """)
 
 # Page 2: EDA
@@ -118,11 +94,14 @@ elif page_selection == "EDA":
     # Visualization 3: Trends in Revenue Over Time
     st.subheader("Trends in Revenue Over Time")
     def plot_revenue_trends(ax):
-        yearly_revenue = data.groupby("release_year")["revenue"].mean()
+        data["release_year"] = pd.to_numeric(data["release_year"], errors="coerce")
+        data.dropna(subset=["release_year"], inplace=True)
+        data["release_year"] = data["release_year"].astype(int)
+        yearly_revenue = data.groupby("release_year")["revenue"].sum()
         sns.lineplot(x=yearly_revenue.index, y=yearly_revenue.values, ax=ax, marker="o")
-        ax.set_title("Trends in Average Revenue Over the Years")
+        ax.set_title("Revenue Trends Over Time")
         ax.set_xlabel("Release Year")
-        ax.set_ylabel("Average Revenue")
+        ax.set_ylabel("Revenue")
     seaborn_plot(plot_revenue_trends)
 
     # Visualization 4: Top Genres by Revenue
@@ -197,29 +176,23 @@ elif page_selection == "Inference Results":
     # Display inference data
     st.dataframe(inference_results)
 
+    # Metrics: Calculate MSE and R²
+    if "actual_revenue" in inference_results.columns and "predicted_revenue" in inference_results.columns:
+        mse = mean_squared_error(
+            inference_results["actual_revenue"], inference_results["predicted_revenue"]
+        )
+        r2 = r2_score(
+            inference_results["actual_revenue"], inference_results["predicted_revenue"]
+        )
+        st.subheader("Champion Model Performance")
+        st.metric("Mean Squared Error (MSE)", f"{mse:,.2f}")
+        st.metric("R² Score", f"{r2:.2f}")
+
     # Visualization: Predicted vs Actual Revenue
     st.subheader("Predicted vs Actual Revenue")
     def plot_predicted_vs_actual(ax):
-        sns.scatterplot(
-            data=inference_results,
-            x="actual_revenue",
-            y="predicted_revenue",
-            alpha=0.6,
-            ax=ax,
-        )
+        sns.scatterplot(data=inference_results, x="actual_revenue", y="predicted_revenue", alpha=0.6, ax=ax)
         ax.set_title("Predicted vs Actual Revenue")
         ax.set_xlabel("Actual Revenue")
         ax.set_ylabel("Predicted Revenue")
     seaborn_plot(plot_predicted_vs_actual)
-
-    # Metrics: Champion model performance
-    st.subheader("Champion Model Performance")
-    mse = ((inference_results["predicted_revenue"] - inference_results["actual_revenue"]) ** 2).mean()
-    rmse = np.sqrt(mse)
-    mae = (np.abs(inference_results["predicted_revenue"] - inference_results["actual_revenue"])).mean()
-    r2 = 1 - (np.sum((inference_results["predicted_revenue"] - inference_results["actual_revenue"]) ** 2) /
-              np.sum((inference_results["actual_revenue"] - inference_results["actual_revenue"].mean()) ** 2))
-    st.metric("Mean Squared Error (MSE)", f"{mse:,.2f}")
-    st.metric("Root Mean Squared Error (RMSE)", f"{rmse:,.2f}")
-    st.metric("Mean Absolute Error (MAE)", f"{mae:,.2f}")
-    st.metric("R² Score", f"{r2:.2f}")
