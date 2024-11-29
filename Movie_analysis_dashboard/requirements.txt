@@ -77,7 +77,7 @@ six==1.16.0
 smmap==5.0.1
 SQLAlchemy==2.0.19
 stack-data==0.6.3
-streamlit==1.29.0
+streamlit==1.39.0
 tenacity==8.2.2
 threadpoolctl==3.2.0
 toml==0.10.2
