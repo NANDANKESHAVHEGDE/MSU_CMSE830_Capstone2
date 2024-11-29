@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -16,9 +17,22 @@ st.set_page_config(
 # Load models and data
 @st.cache_data
 def load_data():
-    data_path = "../Interim_Data/Final_Cleaned_Data.pkl"
-    inference_results_path = "../Predictions/inference_results.csv"
-    model_path = "../Model_outputs/champion_model.pkl"
+    # Resolve paths dynamically
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(base_dir, "../Interim_Data/Final_Cleaned_Data.pkl")
+    inference_results_path = os.path.join(base_dir, "../Predictions/inference_results.csv")
+    model_path = os.path.join(base_dir, "../Model_outputs/champion_model.pkl")
+
+    # Ensure files exist
+    if not os.path.exists(data_path):
+        st.error(f"Data file not found: {data_path}. Please ensure the file is uploaded.")
+        st.stop()
+    if not os.path.exists(inference_results_path):
+        st.error(f"Inference results file not found: {inference_results_path}. Please ensure the file is uploaded.")
+        st.stop()
+    if not os.path.exists(model_path):
+        st.error(f"Model file not found: {model_path}. Please ensure the file is uploaded.")
+        st.stop()
 
     # Load the data and model
     data = pd.read_pickle(data_path)
