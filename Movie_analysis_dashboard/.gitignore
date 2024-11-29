@@ -1,6 +1,5 @@
 # Ignore the Data_sources directory
 Data_sources/
-Interim_Data
 
 # Python bytecode files
 __pycache__/
