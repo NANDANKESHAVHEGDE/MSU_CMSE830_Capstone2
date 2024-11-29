@@ -1,7 +1,18 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle 
+import pickle
+import subprocess
+import sys
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+try:
+    import seaborn
+except ImportError:
+    install("seaborn==0.13.2")
+     
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
