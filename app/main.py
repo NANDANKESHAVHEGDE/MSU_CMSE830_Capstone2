@@ -434,6 +434,7 @@ elif page_selection == "Model Prediction":
     """, unsafe_allow_html=True)
 
     # Load the champion model
+    model_path = os.path.join(base_dir, "../Model_outputs/champion_model.pkl")
     try:
         with open(model_path, "rb") as f:
             pipeline = pickle.load(f)
@@ -523,6 +524,7 @@ elif page_selection == "Model Prediction":
     """, unsafe_allow_html=True)
 
     # Load the champion model
+     model_path = os.path.join(base_dir, "../Model_outputs/champion_model.pkl")
     try:
         with open(model_path, "rb") as f:
             pipeline = pickle.load(f)
@@ -643,6 +645,7 @@ elif page_selection == "Inference Results":
 
     try:
         # Load inference data
+        inference_results_path = os.path.join(base_dir, "../Predictions/inference_results.csv")
         inference_results = pd.read_csv(inference_path)
 
         # Metrics: Mean Absolute Percentage Error (MAPE)
