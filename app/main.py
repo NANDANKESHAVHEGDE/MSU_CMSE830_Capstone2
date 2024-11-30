@@ -648,7 +648,7 @@ elif page_selection == "Inference Results":
     try:
         # Load inference data
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        inference_results_path = os.path.join(base_dir, "../Predictions/inference_results.csv")
+        inference_path = os.path.join(base_dir, "../Predictions/inference_results.csv")
         inference_results = pd.read_csv(inference_path)
 
         # Metrics: Mean Absolute Percentage Error (MAPE)
