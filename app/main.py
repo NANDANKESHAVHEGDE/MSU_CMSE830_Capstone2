@@ -434,6 +434,7 @@ elif page_selection == "Model Prediction":
     """, unsafe_allow_html=True)
 
     # Load the champion model
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     model_path = os.path.join(base_dir, "../Model_outputs/champion_model.pkl")
     try:
         with open(model_path, "rb") as f:
@@ -524,6 +525,7 @@ elif page_selection == "Model Prediction":
     """, unsafe_allow_html=True)
 
     # Load the champion model
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     model_path = os.path.join(base_dir, "../Model_outputs/champion_model.pkl")
     try:
         with open(model_path, "rb") as f:
@@ -645,6 +647,7 @@ elif page_selection == "Inference Results":
 
     try:
         # Load inference data
+        base_dir = os.path.dirname(os.path.abspath(__file__))
         inference_results_path = os.path.join(base_dir, "../Predictions/inference_results.csv")
         inference_results = pd.read_csv(inference_path)
 
