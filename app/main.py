@@ -434,7 +434,6 @@ elif page_selection == "Model Prediction":
     """, unsafe_allow_html=True)
 
     # Load the champion model
-    model_path = "C:/Users/Nandan Hegde/OneDrive/Documents/GitHub/MSU_CMSE_830_Final_Semester_project/Movie_analysis_dashboard/Model_outputs/champion_model.pkl"
     try:
         with open(model_path, "rb") as f:
             pipeline = pickle.load(f)
@@ -524,7 +523,6 @@ elif page_selection == "Model Prediction":
     """, unsafe_allow_html=True)
 
     # Load the champion model
-    model_path = "C:/Users/Nandan Hegde/OneDrive/Documents/GitHub/MSU_CMSE_830_Final_Semester_project/Movie_analysis_dashboard/Model_outputs/champion_model.pkl"
     try:
         with open(model_path, "rb") as f:
             pipeline = pickle.load(f)
@@ -642,8 +640,6 @@ elif page_selection == "Inference Results":
     # Load the inference results
     st.markdown("<div class='container'>", unsafe_allow_html=True)
     st.markdown("<div class='header'>Inference Results</div>", unsafe_allow_html=True)
-
-    inference_path = "C:/Users/Nandan Hegde/OneDrive/Documents/GitHub/MSU_CMSE_830_Final_Semester_project/Movie_analysis_dashboard/Predictions/inference_results.csv"
 
     try:
         # Load inference data
