@@ -327,58 +327,9 @@ elif page_selection == "Data Diagnostics":
 
     st.markdown("<div class='diagnostics-header'>Data Diagnostics</div>", unsafe_allow_html=True)
 
-    # Load data from Google Drive
-    data_url = "https://drive.google.com/uc?id=1BqGM6CYydHM895j4EN5Lxt9_v5D0yaLj"
-    data = pd.read_pickle(data_url)
-
-    # Display Sample Data
-# Page 2: Data Diagnostics
-elif page_selection == "Data Diagnostics":
-    st.markdown("""
-    <style>
-        .diagnostics-container {
-            background: linear-gradient(to right, #f0f4c3, #e1f5fe);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-        }
-        .diagnostics-header {
-            font-size: 32px;
-            font-weight: bold;
-            color: #388e3c;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .diagnostics-subheader {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1e88e5;
-            margin-top: 25px;
-        }
-        .diagnostics-content {
-            font-size: 18px;
-            color: #424242;
-            line-height: 1.8;
-        }
-        .summary-points {
-            font-size: 18px;
-            color: #555555;
-            margin-top: 20px;
-            line-height: 1.8;
-        }
-        .summary-points ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-        .summary-points ul li:before {
-            content: "• ";
-            color: #1e88e5;
-            font-size: 20px;
-            margin-right: 5px;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(base_dir, "../Interim_Data/Data_prep.pkl")
+    data = pd.read_pickle(data_path)
 
     # Display Sample Data
     st.markdown("<div class='diagnostics-subheader'>Sample Data</div>", unsafe_allow_html=True)
