@@ -1145,3 +1145,38 @@ elif page_selection == "Model Prediction":
             st.markdown("<div class='error-box'>Model is not loaded correctly. Please check the champion_model.pkl file.</div>", unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+     # Footer Section with Enhanced Positioning
+    st.markdown("""
+    <style>
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 10px;
+            width: 100%;
+            background: linear-gradient(to right, #f9f9f9, #e0e0e0);
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #555555;
+            text-align: center;
+            border-top: 1px solid #dddddd;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .footer img {
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .footer a {
+            font-weight: bold;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            color: #388E3C;
+        }
+    </style>
+    <div class='footer'>
+        <img src='https://img.icons8.com/ios-filled/50/000000/info.png' width='30' alt='Footer Icon' />
+        This dashboard is a final project for the CMSE830 course of the MSDS program at Michigan State University. 
+    </div>
+    """, unsafe_allow_html=True)
